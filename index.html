@@ -74,7 +74,7 @@
 const scenes = [
 
 { title: "Scene 1 — Healthy paddy field",
-  narration: "A lush paddy field. Three Bio-Sniff sensor nodes stand watch in a triangular formation. Everything looks healthy — no visible damage yet.",
+  narration: "A lush farming field. Three Bio-Sniff sensor nodes stand watch in a triangular formation. Everything looks healthy — no visible damage yet.",
   svg: `<svg width="100%" viewBox="0 0 680 320">
   <rect x="0" y="0" width="680" height="320" fill="#d4edba"/>
   <rect x="0" y="220" width="680" height="100" fill="#c2d97a"/>
@@ -85,7 +85,7 @@ const scenes = [
     <ellipse cx="${x+3}" cy="${175+((i%3)*8)}" rx="7" ry="12" fill="#6bbf3a"/>
     <ellipse cx="${x+11}" cy="${177+((i%3)*8)}" rx="8" ry="11" fill="#62b534"/>
   `).join('')}
-  <text x="340" y="30" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#27500a" font-weight="500">Paddy field — day 0, no disease detected</text>
+  <text x="340" y="30" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#27500a" font-weight="500">farming field — day 0, no disease detected</text>
   <g class="anim-bob">
     <rect x="112" y="110" width="12" height="60" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
     <rect x="104" y="90" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
@@ -197,7 +197,36 @@ const scenes = [
   <text x="340" y="24" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#085041" font-weight="500">Three nodes sense the VOC cloud simultaneously</text>
 </svg>` },
 
-{ title: "Scene 5 — Edge AI classifies the disease",
+
+
+{ title: "Scene 5 — LoRaWAN: satellite nodes relay to master",
+  narration: "Both satellite nodes (B and C) compress their VOC readings and transmit wirelessly via LoRaWAN to the Master Node A — up to 5 km range, ultra-low power.",
+  svg: `<svg width="100%" viewBox="0 0 680 340">
+  <rect x="0" y="0" width="680" height="340" fill="#EAF3DE"/>
+  <rect x="56" y="130" width="110" height="70" rx="10" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
+  <text x="111" y="158" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#C0DD97" font-weight="500">Master Node A</text>
+  <text x="111" y="172" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#9FE1CB">ESP32 + 5G RedCap</text>
+  <text x="111" y="186" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">LoRaWAN</text>
+  <rect x="274" y="50" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="329" y="74" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite B</text>
+  <text x="329" y="90" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOC: 450 ppb</text>
+  <rect x="274" y="220" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="329" y="244" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite C</text>
+  <text x="329" y="260" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOC: 200 ppb</text>
+  <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" d="M274,80 L168,162" marker-end="url(#a3)"/>
+  <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" style="animation-delay:.5s" d="M274,250 L168,178" marker-end="url(#a3)"/>
+  <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+  <text x="200" y="108" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">LoRaWAN chirp</text>
+  <text x="200" y="220" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">LoRaWAN chirp</text>
+  <rect x="460" y="110" width="185" height="110" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+  <text x="552" y="132" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041" font-weight="500">Master aggregates</text>
+  <text x="552" y="150" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node A: 630 ppb</text>
+  <text x="552" y="167" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node B: 450 ppb</text>
+  <text x="552" y="184" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node C: 200 ppb</text>
+  <text x="552" y="204" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">Ready for triangulation</text>
+  <text x="340" y="310" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041">Range up to 5 km — works in zero-signal rural areas</text>
+</svg>` },
+    { title: "Scene 6 — Edge AI classifies the disease",
   narration: "Inside each ESP32, the raw VOC reading is filtered for humidity and environmental noise, then compared against heuristic benchmarks. A >50% resistance drop in heating steps 7–10 flags Stem Borer.",
   svg: `<svg width="100%" viewBox="0 0 680 340">
   <rect x="0" y="0" width="680" height="340" fill="#EAF3DE"/>
@@ -224,34 +253,6 @@ const scenes = [
   <text x="500" y="218" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#534AB7">HP-354 profile match</text>
   <line x1="300" y1="200" x2="378" y2="160" stroke="#378ADD" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a2)"/>
   <text x="340" y="316" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0C447C">Zero-latency edge inference — no cloud needed for classification</text>
-</svg>` },
-
-{ title: "Scene 6 — LoRaWAN: satellite nodes relay to master",
-  narration: "Both satellite nodes (B and C) compress their VOC readings and transmit wirelessly via LoRaWAN to the Master Node A — up to 5 km range, ultra-low power.",
-  svg: `<svg width="100%" viewBox="0 0 680 340">
-  <rect x="0" y="0" width="680" height="340" fill="#EAF3DE"/>
-  <rect x="56" y="130" width="110" height="70" rx="10" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
-  <text x="111" y="158" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#C0DD97" font-weight="500">Master Node A</text>
-  <text x="111" y="172" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#9FE1CB">ESP32 + 5G RedCap</text>
-  <text x="111" y="186" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">LoRaWAN</text>
-  <rect x="274" y="50" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="329" y="74" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite B</text>
-  <text x="329" y="90" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOC: 450 ppb</text>
-  <rect x="274" y="220" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="329" y="244" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite C</text>
-  <text x="329" y="260" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOC: 200 ppb</text>
-  <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" d="M274,80 L168,162" marker-end="url(#a3)"/>
-  <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" style="animation-delay:.5s" d="M274,250 L168,178" marker-end="url(#a3)"/>
-  <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
-  <text x="200" y="108" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">LoRaWAN chirp</text>
-  <text x="200" y="220" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">LoRaWAN chirp</text>
-  <rect x="460" y="110" width="185" height="110" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
-  <text x="552" y="132" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041" font-weight="500">Master aggregates</text>
-  <text x="552" y="150" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node A: 630 ppb</text>
-  <text x="552" y="167" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node B: 450 ppb</text>
-  <text x="552" y="184" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Node C: 200 ppb</text>
-  <text x="552" y="204" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1D9E75">Ready for triangulation</text>
-  <text x="340" y="310" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041">Range up to 5 km — works in zero-signal rural areas</text>
 </svg>` },
 
 { title: "Scene 7 — Triangulation engine finds Patient Zero",
