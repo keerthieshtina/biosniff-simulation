@@ -182,40 +182,106 @@ body {
 <script>
 const scenes = [
 
-/* ── SCENE 1 ──────────────────────────────────────────────── */
+/* ── SCENE 1 ── Clean triangulation layout, no overlapping boxes ── */
 { title: "Scene 1 — Healthy farming field",
   narration: "A healthy field monitored by three Bio-Sniff sensor nodes.",
-  svg: `<svg width="100%" viewBox="0 0 680 320">
-  <rect x="0" y="0" width="680" height="320" fill="#d4edba"/>
-  <rect x="0" y="220" width="680" height="100" fill="#c2d97a"/>
-  <rect x="0" y="270" width="680" height="50" fill="#a8c455"/>
-  ${[40,90,140,190,240,290,340,390,440,490,540,590,630].map((x,i)=>`
-    <rect x="${x}" y="${185+((i%3)*8)}" width="14" height="${35+((i%4)*6)}" rx="2" fill="#4a8c2a"/>
-    <ellipse cx="${x+7}" cy="${182+((i%3)*8)}" rx="10" ry="14" fill="#5aad32"/>
-    <ellipse cx="${x+3}" cy="${175+((i%3)*8)}" rx="7" ry="12" fill="#6bbf3a"/>
-    <ellipse cx="${x+11}" cy="${177+((i%3)*8)}" rx="8" ry="11" fill="#62b534"/>
+  svg: `<svg width="100%" viewBox="0 0 780 520">
+  <!-- Sky / field background -->
+  <rect x="0" y="0" width="780" height="520" fill="#d4edba"/>
+  <rect x="0" y="370" width="780" height="150" fill="#c2d97a"/>
+  <rect x="0" y="440" width="780" height="80"  fill="#a8c455"/>
+
+  <!-- Crop rows -->
+  ${[30,75,120,165,210,255,300,345,390,435,480,525,570,615,660,710].map((x,i)=>`
+    <rect x="${x}" y="${335+((i%3)*7)}" width="13" height="${30+((i%4)*5)}" rx="2" fill="#4a8c2a"/>
+    <ellipse cx="${x+6}" cy="${332+((i%3)*7)}" rx="9"  ry="13" fill="#5aad32"/>
+    <ellipse cx="${x+2}" cy="${325+((i%3)*7)}" rx="7"  ry="11" fill="#6bbf3a"/>
+    <ellipse cx="${x+10}" cy="${327+((i%3)*7)}" rx="7" ry="10" fill="#62b534"/>
   `).join('')}
-  <text x="340" y="30" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#27500a" font-weight="500">farming field — day 0, no disease detected</text>
+
+  <!-- Title -->
+  <text x="390" y="26" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#27500a" font-weight="500">farming field — day 0, no disease detected</text>
+
+  <!-- ============================================================
+       LAYOUT PLAN  (no overlaps)
+       Node A (Master)  — bottom-left  pole at x=100, pole-top y=290
+       Node B (Slave)   — bottom-right pole at x=680, pole-top y=290
+       Node C (Slave)   — top-centre   pole at x=390, pole-top y=190
+
+       Info boxes
+       Box A  — far left,  y=40..135   (x=10..175)
+       Box B  — far right, y=40..120   (x=600..775)
+       Box C  — top-centre,y=40..120   (x=290..490)
+
+       Dotted connector lines go from box corner → pole-top
+       Triangle connects the three pole-tops
+  ============================================================ -->
+
+  <!-- ── Node A info box  (far left) ── -->
+  <rect x="10" y="42" width="168" height="94" rx="8" fill="#eaf4dc" stroke="#3B6D11" stroke-width="1.2"/>
+  <text x="94"  y="60"  text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1a3a08" font-weight="700">Node A — Components</text>
+  <line x1="14" y1="66" x2="174" y2="66" stroke="#c0d8a0" stroke-width="0.7"/>
+  <text x="18"  y="80"  font-size="9.5" font-family="sans-serif" fill="#27500a">● 5G RedCap</text>
+  <text x="18"  y="94"  font-size="9.5" font-family="sans-serif" fill="#27500a">● BME688 &amp; ESP32</text>
+  <text x="18"  y="108" font-size="9.5" font-family="sans-serif" fill="#27500a">● LoRa-SX1302</text>
+  <text x="18"  y="122" font-size="9.5" font-family="sans-serif" fill="#27500a">● Solar Power Kits</text>
+  <!-- dotted connector: box bottom-right → Node A pole top -->
+  <line x1="178" y1="108" x2="98" y2="290" stroke="#3B6D11" stroke-width="1" stroke-dasharray="5 3" opacity=".7"/>
+
+  <!-- ── Node C info box  (top-centre) ── -->
+  <rect x="292" y="42" width="196" height="90" rx="8" fill="#eaf4dc" stroke="#3B6D11" stroke-width="1.2"/>
+  <text x="390"  y="60" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1a3a08" font-weight="700">Node C — Components</text>
+  <line x1="296" y1="66" x2="484" y2="66" stroke="#c0d8a0" stroke-width="0.7"/>
+  <text x="300"  y="80" font-size="9.5" font-family="sans-serif" fill="#27500a">● BME688 &amp; ESP32</text>
+  <text x="300"  y="94" font-size="9.5" font-family="sans-serif" fill="#27500a">● LoRa-SX1262</text>
+  <text x="300" y="108" font-size="9.5" font-family="sans-serif" fill="#27500a">● Solar Power Kits</text>
+  <!-- dotted connector: box bottom → Node C pole top -->
+  <line x1="390" y1="132" x2="390" y2="188" stroke="#3B6D11" stroke-width="1" stroke-dasharray="5 3" opacity=".7"/>
+
+  <!-- ── Node B info box  (far right) ── -->
+  <rect x="600" y="42" width="170" height="90" rx="8" fill="#eaf4dc" stroke="#3B6D11" stroke-width="1.2"/>
+  <text x="685"  y="60" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#1a3a08" font-weight="700">Node B — Components</text>
+  <line x1="604" y1="66" x2="766" y2="66" stroke="#c0d8a0" stroke-width="0.7"/>
+  <text x="608"  y="80" font-size="9.5" font-family="sans-serif" fill="#27500a">● BME688 &amp; ESP32</text>
+  <text x="608"  y="94" font-size="9.5" font-family="sans-serif" fill="#27500a">● LoRa-SX1262</text>
+  <text x="608" y="108" font-size="9.5" font-family="sans-serif" fill="#27500a">● Solar Power Kits</text>
+  <!-- dotted connector: box bottom-left → Node B pole top -->
+  <line x1="602" y1="108" x2="682" y2="290" stroke="#3B6D11" stroke-width="1" stroke-dasharray="5 3" opacity=".7"/>
+
+  <!-- ── Triangle of coverage (connects the three pole-tops) ── -->
+  <polygon points="100,290 680,290 390,190"
+           fill="rgba(29,158,117,.07)" stroke="#1D9E75" stroke-width="1.5"
+           stroke-dasharray="7 5" opacity=".85"/>
+
+  <!-- ── NODE A  (Master — bottom-left) ── -->
   <g class="anim-bob">
-    <rect x="112" y="110" width="12" height="60" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
-    <rect x="104" y="90" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
-    <circle cx="118" cy="101" r="5" fill="#5DCAA5"/>
-    <text x="118" y="142" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a">Node A</text>
+    <rect x="94"  y="290" width="12" height="60" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
+    <rect x="86"  y="270" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.8"/>
+    <circle cx="100" cy="281" r="5" fill="#5DCAA5"/>
+    <text x="100" y="362" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a" font-weight="700">Node A</text>
+    <text x="100" y="374" text-anchor="middle" font-size="9"  font-family="sans-serif" fill="#3B6D11" font-weight="600">Master Node</text>
   </g>
-  <g class="anim-bob" style="animation-delay:.4s">
-    <rect x="510" y="130" width="12" height="60" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
-    <rect x="502" y="110" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
-    <circle cx="516" cy="121" r="5" fill="#5DCAA5"/>
-    <text x="516" y="162" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a">Node B</text>
+
+  <!-- ── NODE B  (Slave — bottom-right) ── -->
+  <g class="anim-bob" style="animation-delay:.45s">
+    <rect x="674" y="290" width="12" height="60" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
+    <rect x="666" y="270" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.8"/>
+    <circle cx="680" cy="281" r="5" fill="#5DCAA5"/>
+    <text x="680" y="362" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a" font-weight="700">Node B</text>
+    <text x="680" y="374" text-anchor="middle" font-size="9"  font-family="sans-serif" fill="#3B6D11" font-weight="600">Slave Node</text>
   </g>
-  <g class="anim-bob" style="animation-delay:.8s">
-    <rect x="320" y="145" width="12" height="55" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
-    <rect x="312" y="125" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
-    <circle cx="326" cy="136" r="5" fill="#5DCAA5"/>
-    <text x="326" y="175" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a">Node C</text>
+
+  <!-- ── NODE C  (Slave — top-centre) ── -->
+  <g class="anim-bob" style="animation-delay:.9s">
+    <rect x="384" y="190" width="12" height="55" rx="2" fill="#888" stroke="#555" stroke-width="0.5"/>
+    <rect x="376" y="170" width="28" height="22" rx="4" fill="#3B6D11" stroke="#27500a" stroke-width="0.8"/>
+    <circle cx="390" cy="181" r="5" fill="#5DCAA5"/>
+    <text x="390" y="256" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#27500a" font-weight="700">Node C</text>
+    <text x="390" y="268" text-anchor="middle" font-size="9"  font-family="sans-serif" fill="#3B6D11" font-weight="600">Slave Node</text>
   </g>
-  <polygon points="118,100 516,120 326,135" fill="none" stroke="#1D9E75" stroke-width="1" stroke-dasharray="5 4" opacity=".5"/>
-  <text x="340" y="295" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3B6D11">Triangle of protection — 1 acre coverage</text>
+
+  <!-- Footer -->
+  <text x="390" y="500" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3B6D11">Triangle of protection — 1 acre coverage</text>
 </svg>` },
 
 /* ── SCENE 2 ──────────────────────────────────────────────── */
@@ -251,7 +317,7 @@ const scenes = [
   <text x="340" y="295" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#712B13">Visual AI fails here — attack is completely internal</text>
 </svg>` },
 
-/* ── SCENE 3 — VOC → VOCs (Volatile Organic Compound) ──── */
+/* ── SCENE 3 ──────────────────────────────────────────────── */
 { title: "Scene 3 — Plant releases VOCs stress signal",
   narration: "Under attack, the plant releases VOCs (Volatile Organic Compounds) — invisible chemical distress signals. This happens 7–10 days before any visible symptom appears.",
   svg: `<svg width="100%" viewBox="0 0 680 340">
@@ -283,7 +349,7 @@ const scenes = [
   <text x="340" y="315" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3C3489">VOCs (Volatile Organic Compound) = plant's chemical cry for help</text>
 </svg>` },
 
-/* ── SCENE 4 — Field with 3 nodes (same layout as Scene 1) ── */
+/* ── SCENE 4 ──────────────────────────────────────────────── */
 { title: "Scene 4 — BME688 sensors detect the VOCs",
   narration: "All three Bio-Sniff nodes sense the drifting VOCs cloud. The BME688 gas sensor measures resistance changes across its HP-354 heating profile, creating a digital chemical fingerprint.",
   svg: `<svg width="100%" viewBox="0 0 680 320">
@@ -328,20 +394,20 @@ const scenes = [
   <text x="340" y="295" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3B6D11">BME688 gas sensor — HP-354 heating profile fingerprint</text>
 </svg>` },
 
-/* ── SCENE 5 — LoRaWAN chirp → LoRaWAN-SX1262 ─────────── */
-{ title: "Scene 5 — LoRaWAN-SX1262: satellite nodes relay to master",
-  narration: "Both satellite nodes (B and C) compress their VOCs readings and transmit wirelessly via LoRaWAN-SX1262 to the Master Node A — up to 5 km range, ultra-low power.",
+/* ── SCENE 5 — UPDATED: Satellite → Slave Node, LoRaWAN-SX1262 → LoRaWAN-SX1302 on Master ── */
+{ title: "Scene 5 — LoRaWAN-SX1262: slave nodes relay to master",
+  narration: "Both slave nodes (B and C) compress their VOCs readings and transmit wirelessly via LoRaWAN-SX1262 to the Master Node A — up to 5 km range, ultra-low power.",
   svg: `<svg width="100%" viewBox="0 0 680 340">
   <rect x="0" y="0" width="680" height="340" fill="#EAF3DE"/>
-  <rect x="56" y="130" width="110" height="70" rx="10" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
+  <rect x="56" y="130" width="110" height="82" rx="10" fill="#3B6D11" stroke="#27500a" stroke-width="0.5"/>
   <text x="111" y="158" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#C0DD97" font-weight="500">Master Node A</text>
   <text x="111" y="172" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#9FE1CB">ESP32 + 5G RedCap</text>
-  <text x="111" y="186" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">LoRaWAN-SX1262</text>
+  <text x="111" y="186" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">LoRaWAN-SX1302</text>
   <rect x="274" y="50" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="329" y="74" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite B</text>
+  <text x="329" y="72" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Slave Node B</text>
   <text x="329" y="90" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOCs: 450 ppb</text>
   <rect x="274" y="220" width="110" height="60" rx="10" fill="#085041" stroke="#0F6E56" stroke-width="0.5"/>
-  <text x="329" y="244" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Satellite C</text>
+  <text x="329" y="242" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#9FE1CB" font-weight="500">Slave Node C</text>
   <text x="329" y="260" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#5DCAA5">VOCs: 200 ppb</text>
   <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" d="M274,80 L168,162" marker-end="url(#a3)"/>
   <path class="anim-flow" fill="none" stroke="#1D9E75" stroke-width="2" stroke-dasharray="8 5" style="animation-delay:.5s" d="M274,250 L168,178" marker-end="url(#a3)"/>
@@ -357,13 +423,13 @@ const scenes = [
   <text x="340" y="310" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041">Range up to 15 km — works in zero-signal rural areas</text>
 </svg>` },
 
-/* ── SCENE 6 ──────────────────────────────────────────────── */
+/* ── SCENE 6 — UPDATED: ESP32 → Raspberry Pi ──────────────── */
 { title: "Scene 6 — Edge AI classifies the disease",
-  narration: "Inside each ESP32, the raw VOCs reading is filtered for humidity and environmental noise, then compared against heuristic benchmarks. A >50% resistance drop in heating steps 7–10 flags Stem Borer.",
+  narration: "Inside each Raspberry Pi, the raw VOCs reading is filtered for humidity and environmental noise, then compared against heuristic benchmarks. A >50% resistance drop in heating steps 7–10 flags Stem Borer.",
   svg: `<svg width="100%" viewBox="0 0 680 340">
   <rect x="0" y="0" width="680" height="340" fill="#EAF3DE"/>
   <rect x="60" y="40" width="240" height="260" rx="12" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
-  <text x="180" y="64" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#0C447C" font-weight="500">ESP32 edge processor</text>
+  <text x="180" y="64" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#0C447C" font-weight="500">Raspberry Pi edge processor</text>
   ${[
     {label:'Raw VOCs reading',y:90,col:'#E6F1FB',bc:'#B5D4F4',tc:'#0C447C'},
     {label:'Humidity filter',y:140,col:'#EAF3DE',bc:'#C0DD97',tc:'#27500a'},
@@ -387,7 +453,7 @@ const scenes = [
   <text x="340" y="316" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0C447C">Zero-latency edge inference — no cloud needed</text>
 </svg>` },
 
-/* ── SCENE 7 — Triangulation engine ──────────────────────── */
+/* ── SCENE 7 ──────────────────────────────────────────────── */
 { title: "Scene 7 — Triangulation engine locates the source",
   narration: "Master Node A runs a gradient triangulation algorithm. The VOCs concentration difference between nodes pinpoints the infection source with 2-metre accuracy. Wind direction is factored in.",
   svg: `<svg width="100%" viewBox="0 0 680 380">
@@ -434,11 +500,11 @@ const scenes = [
   <text x="340" y="358" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041">Source pinpointed with 2-meter radius</text>
 </svg>` },
 
-/* ── SCENE 8 — Cloud upload & dashboard ──────────────────── */
+/* ── SCENE 8 — UPDATED: "+ SST priority code" label below Master Node box ── */
 { title: "Scene 8 — 5G RedCap: data reaches the cloud",
   narration: "Master Node A transmits classified VOCs data via 5G RedCap through a dedicated SST3/MMTC network slice to the Bio-Sniff cloud. The cloud receives the full disease event in under 3 seconds.",
-  svg: `<svg width="100%" viewBox="0 0 820 400">
-  <rect x="0" y="0" width="820" height="400" fill="#EAF3DE"/>
+  svg: `<svg width="100%" viewBox="0 0 820 420">
+  <rect x="0" y="0" width="820" height="420" fill="#EAF3DE"/>
 
   <!-- ① Master node x=10, width=150 -->
   <rect x="10" y="80" width="150" height="200" rx="12" fill="#2d5c0e" stroke="#3B6D11" stroke-width="1.5"/>
@@ -450,14 +516,17 @@ const scenes = [
   <text x="85" y="197" text-anchor="middle" font-size="9.5" font-family="monospace" fill="#a8d87a">"severity":"High"</text>
   <text x="85" y="218" text-anchor="middle" font-size="12" font-family="monospace" fill="#7FE0C0">}</text>
 
+  <!-- "+ SST priority code" label below Master Node box -->
+  <rect x="10" y="288" width="150" height="26" rx="8" fill="#1565C0" opacity=".9"/>
+  <text x="85" y="305" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#ffffff" font-weight="600">+ SST priority code</text>
+
   <defs>
     <marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#1565C0" stroke-width="1.8"/></marker>
     <marker id="mb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#7F77DD" stroke-width="1.8"/></marker>
   </defs>
 
-  <!-- ── 5G RedCap arrow: wide gap 160→240, label centred above ── -->
+  <!-- ── 5G RedCap arrow ── -->
   <path class="anim-flow" fill="none" stroke="#1565C0" stroke-width="3" stroke-dasharray="10 6" d="M162,180 L238,180" marker-end="url(#ma)"/>
-  <!-- label background pill -->
   <rect x="162" y="152" width="76" height="22" rx="8" fill="#1565C0"/>
   <text x="200" y="168" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#ffffff" font-weight="700">5G RedCap</text>
 
@@ -493,10 +562,10 @@ const scenes = [
   <circle cx="798" cy="72" r="7" fill="#E24B4A" class="anim-blink"/>
   <circle cx="798" cy="72" r="13" fill="none" stroke="#E24B4A" stroke-width="1" class="anim-ping"/>
 
-  <text x="410" y="370" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#085041">Dedicated IoT slice ensures priority routing — no packet loss</text>
+  <text x="410" y="395" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#085041">Dedicated IoT slice ensures priority routing — no packet loss</text>
 </svg>` },
 
-/* ── SCENE 9 — Outcome & impact ──────────────────────────── */
+/* ── SCENE 9 ──────────────────────────────────────────────── */
 { title: "Scene 9 — Outcome: early action saves the crop",
   narration: "Farmer sprays only the flagged 2m zone. Crop loss drops from ~30% to under 3%. Chemical usage falls 84%. Bio-Sniff pays for itself in the first season.",
   svg: `<svg width="100%" viewBox="0 0 680 420">
@@ -508,23 +577,23 @@ const scenes = [
   <text x="100" y="166" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#a32d2d">Entire field sprayed</text>
   <text x="100" y="184" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#a32d2d">Cost: Rs 5,000/acre</text>
   <text x="100" y="246" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#c0312a">100% chemical use</text>
-  <!-- Phone mockup centre — exact match to image -->
+  <!-- Phone mockup centre -->
   <rect x="210" y="20" width="260" height="370" rx="30" fill="#1a1a1a"/>
   <rect x="217" y="27" width="246" height="356" rx="25" fill="#2a2a2a"/>
   <rect x="295" y="30" width="90" height="10" rx="5" fill="#111"/>
   <rect x="221" y="46" width="238" height="330" rx="20" fill="#f8fef4"/>
-  <!-- Bio-Sniff Alert box — red, rounded, exactly like image -->
+  <!-- Bio-Sniff Alert box -->
   <rect x="229" y="54" width="222" height="108" rx="12" fill="#FCEBEB" stroke="#E24B4A" stroke-width="1"/>
   <text x="340" y="78" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#c0312a" font-weight="500">Bio-Sniff Alert</text>
   <text x="340" y="98" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#791F1F" font-weight="700">Stem Borer Detected</text>
   <text x="340" y="116" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#a32d2d">Zone 3 — Precision spray</text>
   <text x="340" y="132" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#a32d2d">Lat 16.31, Lon 80.43</text>
-  <!-- Recommendation box — teal/cyan like image -->
+  <!-- Recommendation box -->
   <rect x="229" y="170" width="222" height="92" rx="12" fill="#e0f7f5" stroke="#1D9E75" stroke-width="1"/>
   <text x="340" y="194" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#085041" font-weight="600">Recommendation</text>
   <text x="340" y="214" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Spray 2m radius only</text>
   <text x="340" y="234" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#0F6E56">Chlorpyrifos — 2ml/L</text>
-  <!-- View field map button — dark green like image -->
+  <!-- View field map button -->
   <rect x="229" y="272" width="222" height="42" rx="12" fill="#3B6D11"/>
   <text x="340" y="298" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#ffffff" font-weight="500">View field map</text>
   <!-- Farmer Dashboard grey footer -->
@@ -540,7 +609,7 @@ const scenes = [
   <text x="594" y="169" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#791F1F" font-weight="700">2m zone</text>
   <text x="580" y="248" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#3B6D11">Micro-zone only</text>
   <text x="580" y="266" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#085041">Cost: Rs 800/acre</text>
-  <!-- bottom footer — only 84% saving, no Rs amounts -->
+  <!-- bottom footer -->
   <text x="340" y="406" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#3B6D11" font-weight="500">84% pesticide saving</text>
 </svg>` },
 
